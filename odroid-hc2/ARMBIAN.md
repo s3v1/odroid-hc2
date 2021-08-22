@@ -38,15 +38,6 @@ Right after changing the password, you are asked to create a normal user-account
 
 When it says *"Set user language based on your location? [Y/n]"* - **SAY NO!!**
 
-### Set public key for the root user
-
-For ease of login, add you own public key to the *root* account, in my case:
-
-    mkdir $HOME/.ssh
-    chmod 700 $HOME/.ssh
-    echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOUWK5GhGu42n434IH2e6wQXrP5SzZLROdSZpEyalB6 myemail@domain.com' >> $HOME/.ssh/authorized_keys
-    chmod -R 600 $HOME/.ssh/*
-
 ## Initial setup of the OS
 
 Here comes a few steps that are good to do in the beginning, to get a good start on a freshly installed OS.
@@ -150,7 +141,60 @@ It's not required and it's not a good idea for production systems, but nice for 
 
 Here is the guide: [How to Enable Unattended Upgrades on Ubuntu/Debian](https://haydenjames.io/how-to-enable-unattended-upgrades-on-ubuntu-debian/)
 
-## All done
+### All done with OS
 
 Now the OS is configured and you are ready to start using the server.
-Check out the other guides in this folder.
+Check out these other OPTIONAL services:
+
+## Plex
+
+Plex is a nice video server that has support for the CPU. The Odroid HC2 has enough CPU power for light realtime transcoding.
+
+### Repo install
+
+You can read about how to [Install plex from a repository](https://support.plex.tv/articles/235974187-enable-repository-updating-for-supported-linux-server-distributions/)
+
+Here's a quick recap:
+
+    echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
+    
+    curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -
+    
+    sudo apt-get update
+
+    sudo apt-get install plexmediaserver -y
+
+You may get asked about "Configuration file '/etc/apt/sources.list.d/plexmediaserver.list'" and what to keep... you should choose the package maintainers version, ie. "Y"
+
+### Access the server
+
+Just like any plex install, just [Access the plex web interface](http://plex:32400/web)
+
+## Jenkins
+
+ [Jenkins](https://www.jenkins.io/) is a nice server for devops/CI/CD automation.
+
+### Pre-requisites for Jenkins
+
+You install this first
+
+    sudo apt install openjdk-11-jdk-headless -y
+
+### Install Jenkins
+
+Then follow guide at <https://pkg.jenkins.io/debian-stable/>:
+
+  wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+  deb https://pkg.jenkins.io/debian-stable binary/
+  sudo apt-get update
+  sudo apt-get install jenkins -y
+
+Jenkins is now installed
+
+### Use Jenkins
+
+By default Jenkins runs on localhost:8080
+
+You should be able to see the initial admin password, by running:
+
+    cat /var/jenkins_home/secrets/initialAdminPassword

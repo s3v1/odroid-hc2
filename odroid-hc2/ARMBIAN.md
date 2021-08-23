@@ -274,9 +274,4 @@ The short version is:
 
     bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry
 
-It may take a while, since there's no precompiled version for this platform and it has to compile all the agents. After installation [You can view local netdata on http://hostname:19999](http://plex:19999)
-
-
-Then claim it in your room:
-
-    sudo netdata-claim.sh -token=2inD9xlTn7SLNVKI74wx0Rc1ji2TTmUcH32fNrTtrSsGNijIVK1g7faxFHTp_I2gJRZ_0QxUiOXw5nmHQc90CkChgWN7_ZAc7iBQKs09EndWZRSZ7kiuEtuBzh0cZYt00po5v-Q -rooms=a79e5b4e-71a6-4c17-88c3-dd562671af71 -url=https://app.netdata.cloud
+It may take a while, since there's no precompiled version for this platform and it has to compile all the agents. After installation [You can view local netdata on http://hostname:19999](http://plex:19999) or add it to your "war room" at <https://app.netdata.cloud>

@@ -32,11 +32,53 @@ You can login with:
 
 ### Create normal/non-root user
 
-Right after changing the password, you are asked to create a normal user-account for your everyday tasks. It will have *sudo* rights.
+Right after changing the password, you are asked to create a normal user-account for your everyday tasks. It will have *sudo* rights. I created a user called "sv"... you should probably choose something else and replace it in the rest of this document, where Iuser it here and there.
 
 * **Make sure to NOT select using local language**
 
 When it says *"Set user language based on your location? [Y/n]"* - **SAY NO!!**
+
+### Change hostname
+
+To change the hostname, run this command:
+
+    sudo hostnamectl set-hostname plex
+
+You can use another hostname, of course. just replace "plex" above with something else.
+
+You can optionally change the name in /etc/hosts to set the hostname to 127.0.0.1, if you want to use it locally:
+
+    sudo nano /etc/hosts
+
+### Configuring and using the new user
+
+From now on, you should start using the new user you created earlier, instead of *root*. So it's time to:
+
+    exit
+
+the root session and log in as the user you just created
+
+### Login
+
+SSH login as the new user, in my case 'sv':
+
+    ssh sv@plex
+
+### Set public key for the regular user
+
+Add you own public key, in my case:
+
+    mkdir $HOME/.ssh
+    chmod 700 $HOME/.ssh
+    echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOUWK5GhGu42n434IH2e6wQXrP5SzZLROdSZpEyalB6 myemail@domain.com' >> $HOME/.ssh/authorized_keys
+    chmod -R 600 $HOME/.ssh/*
+
+### Add sudo without a password
+
+With great power comes great responsibility.
+If you feel lazy and don't care about security, you set the user to not need a password for sudo. This is not recommended, but here's the recipe if you like living dangerously:
+
+    echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER
 
 ## Initial setup of the OS
 
@@ -54,14 +96,6 @@ Install some of my favourite tools and utilities. Avahi announces hostname on th
 
     sudo apt install -y git nano htop mc build-essential glances curl avahi-daemon pigz
 
-### Change hostname
-
-To change the hostname, run this command:
-
-    sudo hostnamectl set-hostname odroid-hc2
-
-You can optionally change the name in /etc/hosts to set the hostname to 127.0.0.1, if you want to use it locally:
-
 ## Set HC2 optimized config
 
 "This board is stripped Odroid XU4 and we use the same images, however, we provide a specially optimized config (for kernel 4.14.y or higher) which has to be applied manually. This results in shorter boot time and lower consumption. Run armbian-config utility and go to section system -> DTB and select optimized board configuration for Odroid HC1. The same config is valid for HC2 and MC1."
@@ -71,6 +105,9 @@ You can optionally change the name in /etc/hosts to set the hostname to 127.0.0.
 * Choose "System"
 * Choose "DTB"
 * Choose "Odroid HC1/HC2"
+
+You'll asked to **reboot**, and you should say yes.
+Login again afterwards. Remember to use the new hostname in case you changed it above.
 
 ### OPTIONAL: Install HDD/SSD
 
@@ -107,32 +144,6 @@ To have all the updates take effect:
 
 Wait couple of minutes, until it's had a chance to restart.
 
-## Configuring and using the new user
-
-From now on, you should start using the new user you created earlier, instead of *root*
-
-### Login
-
-SSH login as the new user, in my case 'sv':
-
-    ssh sv@odroid-hc2
-
-### Set public key for the regular user
-
-Then add you own public key, in my case:
-
-    mkdir $HOME/.ssh
-    chmod 700 $HOME/.ssh
-    echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOUWK5GhGu42n434IH2e6wQXrP5SzZLROdSZpEyalB6 myemail@domain.com' >> $HOME/.ssh/authorized_keys
-    chmod -R 600 $HOME/.ssh/*
-
-### Add sudo without a password
-
-With great power comes great responsibility.
-If you feel lazy and don't care about security, you set the user to not need a password for sudo. This is not recommended, but here's the recipe if you like living dangerously:
-
-    echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER
-
 ### Unattended upgrades
 
 You can configure unattended-upgrades on ubuntu/debian systems to also update normal packages, instead of just security packages.
@@ -140,6 +151,24 @@ You can configure unattended-upgrades on ubuntu/debian systems to also update no
 It's not required and it's not a good idea for production systems, but nice for something like your personal jenkins or plex server (see later sections)
 
 Here is the guide: [How to Enable Unattended Upgrades on Ubuntu/Debian](https://haydenjames.io/how-to-enable-unattended-upgrades-on-ubuntu-debian/)
+
+Quick bits from the article. First edit
+
+    sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
+
+Uncomment the line that says
+
+    //"${distro_id}:${distro_codename}-updates";
+
+Then edit:
+
+    sudo nano /etc/apt/apt.conf.d/20auto-upgrades
+
+Add this line:
+
+    APT::Periodic::AutocleanInterval "7";
+
+You're done with configuring unattended-upgrades
 
 ### All done with OS
 
@@ -166,9 +195,45 @@ Here's a quick recap:
 
 You may get asked about "Configuration file '/etc/apt/sources.list.d/plexmediaserver.list'" and what to keep... you should choose the package maintainers version, ie. "Y"
 
-### Access the server
+### Access the Plex server
 
 Just like any plex install, just [Access the plex web interface](http://plex:32400/web)
+
+### Map a SMB share on another machine
+
+Let's mount a SMB share on another machine, so you can have a big NAS but do the plex transcoding on the Odroid HC2. First instal the tools:
+
+    sudo apt install cifs-utils -y
+
+Test it out
+
+    sudo mkdir /mnt/media
+    sudo mount -t cifs -o username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev //nas/media/video //mnt/media
+
+    ll /mnt/media
+
+To unmount again:
+
+    sudo umount -f /mnt/media
+
+To make it permanent, add a line to /etc/fstab:
+
+    sudo nano  /etc/fstab
+
+Like this:
+
+    //nas/media/video                               /mnt/media      cifs    username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev  0       0
+
+Then mount it for real:
+
+    sudo mount -a
+
+It *should* now persist over a reboot.
+
+Links:
+
+* <https://wiki.ubuntu.com/MountWindowsSharesPermanently>
+* <https://askubuntu.com/a/1295943>
 
 ## Jenkins
 
@@ -184,8 +249,8 @@ You install this first
 
 Then follow guide at <https://pkg.jenkins.io/debian-stable/>:
 
-  wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
-  deb https://pkg.jenkins.io/debian-stable binary/
+  wget -q -O - 'https://pkg.jenkins.io/debian-stable/jenkins.io.key' | sudo apt-key add -
+  deb 'https://pkg.jenkins.io/debian-stable' binary/
   sudo apt-get update
   sudo apt-get install jenkins -y
 
@@ -198,3 +263,20 @@ By default Jenkins runs on localhost:8080
 You should be able to see the initial admin password, by running:
 
     cat /var/jenkins_home/secrets/initialAdminPassword
+
+## Netdata monitoring
+
+Netdata is a nice monitoring tool.
+
+[Here's how to install the client](https://learn.netdata.cloud/docs/get-started#install-on-linux-with-one-line-installer-recommended)
+
+The short version is:
+
+    bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry
+
+It may take a while, since there's no precompiled version for this platform and it has to compile all the agents. After installation [You can view local netdata on http://hostname:19999](http://plex:19999)
+
+
+Then claim it in your room:
+
+    sudo netdata-claim.sh -token=2inD9xlTn7SLNVKI74wx0Rc1ji2TTmUcH32fNrTtrSsGNijIVK1g7faxFHTp_I2gJRZ_0QxUiOXw5nmHQc90CkChgWN7_ZAc7iBQKs09EndWZRSZ7kiuEtuBzh0cZYt00po5v-Q -rooms=a79e5b4e-71a6-4c17-88c3-dd562671af71 -url=https://app.netdata.cloud

@@ -40,8 +40,9 @@ When it says *"Set user language based on your location? [Y/n]"* - **SAY NO!!**
 
 ### Change hostname
 
-To change the hostname, run this command:
+To change the hostname, run these commands:
 
+    sudo apt install -y avahi-daemon
     sudo hostnamectl set-hostname plex
 
 You can use another hostname, of course. just replace "plex" above with something else.
@@ -86,7 +87,7 @@ Here comes a few steps that are good to do in the beginning, to get a good start
 
 ### Update and upgrade
 
-Once you've created the user, you'll still be logged in as *root*. Run these commands to update the OS:
+Run these commands to update the OS:
 
     sudo apt update && sudo apt upgrade -y && sudo apt-get dist-upgrade && sudo apt autoremove -y
 
@@ -191,7 +192,7 @@ Here's a quick recap:
     
     sudo apt-get update
 
-    sudo apt-get install plexmediaserver -y
+   sudo apt-get install plexmediaserver -y
 
 You may get asked about "Configuration file '/etc/apt/sources.list.d/plexmediaserver.list'" and what to keep... you should choose the package maintainers version, ie. "Y"
 
@@ -208,7 +209,7 @@ Let's mount a SMB share on another machine, so you can have a big NAS but do the
 Test it out
 
     sudo mkdir /mnt/media
-    sudo mount -t cifs -o username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev //nas/media/video //mnt/media
+    sudo mount -t cifs -o 'username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev' //nas/media/video //mnt/media
 
     ll /mnt/media
 

@@ -43,7 +43,7 @@ When it says *"Set user language based on your location? [Y/n]"* - **SAY NO!!**
 To change the hostname, run these commands:
 
     sudo apt install -y avahi-daemon
-    sudo hostnamectl set-hostname plex
+    sudo hostnamectl set-hostname ohc21
 
 You can use another hostname, of course. just replace "plex" above with something else.
 
@@ -51,19 +51,30 @@ You can optionally change the name in /etc/hosts to set the hostname to 127.0.0.
 
     sudo nano /etc/hosts
 
-### Configuring and using the new user
+### Update and upgrade
 
-From now on, you should start using the new user you created earlier, instead of *root*. So it's time to:
+Run these commands to update the OS:
 
-    exit
+    sudo apt update && sudo apt upgrade -y && sudo apt-get dist-upgrade && sudo apt autoremove -y
 
-the root session and log in as the user you just created
+## Set HC2 optimized config
+
+"This board is stripped Odroid XU4 and we use the same images, however, we provide a specially optimized config (for kernel 4.14.y or higher) which has to be applied manually. This results in shorter boot time and lower consumption. Run armbian-config utility and go to section system -> DTB and select optimized board configuration for Odroid HC1. The same config is valid for HC2 and MC1."
+
+    sudo armbian-config
+
+* Choose "System"
+* Choose "DTB"
+* Choose "Odroid HC1/HC2"
+
+You'll asked to **reboot**, and you should say yes.
+Login again afterwards. Remember to use the new hostname in case you changed it above.
 
 ### Login
 
 SSH login as the new user, in my case 'sv':
 
-    ssh sv@plex
+    ssh sv@ohc21
 
 ### Set public key for the regular user
 
@@ -85,30 +96,11 @@ If you feel lazy and don't care about security, you set the user to not need a p
 
 Here comes a few steps that are good to do in the beginning, to get a good start on a freshly installed OS.
 
-### Update and upgrade
-
-Run these commands to update the OS:
-
-    sudo apt update && sudo apt upgrade -y && sudo apt-get dist-upgrade && sudo apt autoremove -y
-
 ### Install some tools
 
 Install some of my favourite tools and utilities. Avahi announces hostname on the network. Glances is a good alternative to htop.
 
     sudo apt install -y git nano htop mc build-essential glances curl avahi-daemon pigz
-
-## Set HC2 optimized config
-
-"This board is stripped Odroid XU4 and we use the same images, however, we provide a specially optimized config (for kernel 4.14.y or higher) which has to be applied manually. This results in shorter boot time and lower consumption. Run armbian-config utility and go to section system -> DTB and select optimized board configuration for Odroid HC1. The same config is valid for HC2 and MC1."
-
-    sudo armbian-config
-
-* Choose "System"
-* Choose "DTB"
-* Choose "Odroid HC1/HC2"
-
-You'll asked to **reboot**, and you should say yes.
-Login again afterwards. Remember to use the new hostname in case you changed it above.
 
 ### OPTIONAL: Install HDD/SSD
 
@@ -137,13 +129,7 @@ Then run:
 
 ...and then follow the obvious path. I prefer **ext4** over btrfs, for maximum compatibility.
 
-## Reboot
-
-To have all the updates take effect:
-
-    reboot
-
-Wait couple of minutes, until it's had a chance to restart.
+Reboot when it asks you to.
 
 ### Unattended upgrades
 
@@ -175,66 +161,6 @@ You're done with configuring unattended-upgrades
 
 Now the OS is configured and you are ready to start using the server.
 Check out these other OPTIONAL services:
-
-## Plex
-
-Plex is a nice video server that has support for the CPU. The Odroid HC2 has enough CPU power for light realtime transcoding.
-
-### Repo install
-
-You can read about how to [Install plex from a repository](https://support.plex.tv/articles/235974187-enable-repository-updating-for-supported-linux-server-distributions/)
-
-Here's a quick recap:
-
-    echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
-    
-    curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -
-    
-    sudo apt-get update
-
-   sudo apt-get install plexmediaserver -y
-
-You may get asked about "Configuration file '/etc/apt/sources.list.d/plexmediaserver.list'" and what to keep... you should choose the package maintainers version, ie. "Y"
-
-### Access the Plex server
-
-Just like any plex install, just [Access the plex web interface](http://plex:32400/web)
-
-### Map a SMB share on another machine
-
-Let's mount a SMB share on another machine, so you can have a big NAS but do the plex transcoding on the Odroid HC2. First instal the tools:
-
-    sudo apt install cifs-utils -y
-
-Test it out
-
-    sudo mkdir /mnt/media
-    sudo mount -t cifs -o 'username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev' //nas/media/video //mnt/media
-
-    ll /mnt/media
-
-To unmount again:
-
-    sudo umount -f /mnt/media
-
-To make it permanent, add a line to /etc/fstab:
-
-    sudo nano  /etc/fstab
-
-Like this:
-
-    //nas/media/video                               /mnt/media      cifs    username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev  0       0
-
-Then mount it for real:
-
-    sudo mount -a
-
-It *should* now persist over a reboot.
-
-Links:
-
-* <https://wiki.ubuntu.com/MountWindowsSharesPermanently>
-* <https://askubuntu.com/a/1295943>
 
 ## Jenkins
 
@@ -275,4 +201,4 @@ The short version is:
 
     bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry
 
-It may take a while, since there's no precompiled version for this platform and it has to compile all the agents. After installation [You can view local netdata on http://hostname:19999](http://plex:19999) or add it to your "war room" at <https://app.netdata.cloud>
+It may take a while, since there's no precompiled version for this platform and it has to compile all the agents. After installation [You can view local netdata on http://hostname:19999](http://ohc21:19999) or add it to your "war room" at <https://app.netdata.cloud>

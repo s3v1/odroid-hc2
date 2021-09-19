@@ -16,4 +16,3 @@ The only drawback is that it uses the armv7l architecture, which is 32-bit and n
 
 * [Armbian OS install and setup](ARMBIAN.md)
 * [Docker](DOCKER.md)
-* [Podman](PODMAN.md)

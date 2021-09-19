@@ -1,105 +1,50 @@
-### Docker
+# Docker
 
-You can run docker, but  Upgrade Kernel to 5.x
+## Pre-requisites
 
-You can upgrade the kernel to 5.x, run armbian-config
+You should check the [Armbian OS Setup guide](README.md) first.
 
-	sudo armbian-config
+## Official Guide
 
-	* Choose "System"
-	* Choose "Other", then "Yes, I understand"
-	#* Choose the latest "linux-image-current" kernel
-	* Choose Armbian 21.05.6 Focal kernel
+Guide: <https://docs.docker.com/engine/install/ubuntu/>
 
+However, there's no armhf release for "focal", so you need to replace an ywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too.
 
-## Get and write the OS image
+See that tip in this bug report: <https://github.com/docker/for-linux/issues/1035#issuecomment-905133113>
 
-Get an image from the armbian page listed above.
+## Highlights
 
-I suggest you get the "current" **Armbian Focal**, which is based on Ubuntu LTS 20.04 and has the 5.x kernel, instead of the default "legacy/stock" version which is based on the 4.x kernel:
+    sudo apt-get remove docker docker-engine docker.io containerd runc -y
+    sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo "deb [arch=armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
-![Image of the Armbian current download section](images/armbian_focal_current.png "Choose the current version")
+## Test with sudo
 
-[Here is a direct link to download the "current" version](https://redirect.armbian.com/region/EU/odroidxu4/Focal_current)
+    sudo docker run --rm hello-world
 
-# Reboot
+## Add user to group
 
-	sudo reboot
-	
-	
-	
-###########################################################################
+    sudo usermod -aG docker $USER
+    newgrp docker
 
+## Test without sudo
 
-* SSH login as the new user, in my case 'sv'
+    docker run --rm hello-world
 
-	ssh sv@192.168.86.xxx
-	
-* Add you own public key, in my case
+## Timing
 
-	mkdir $HOME/.ssh
-	chmod 700 $HOME/.ssh
-	echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOUWK5GhGu42n434IH2e6wQXrP5SzZLROdSZpEyalB6 s@vilstrup.me' >> $HOME/.ssh/authorized_keys
-	chmod -R 600 $HOME/.ssh/*
+There's a bit of startup delay, when running docker. It makes even the smallest commmands take 2-3 seconds, so expect results in that timerange.
 
-# add sudo without a password ( https://askubuntu.com/a/878705 )
+    docker pull hello-world && time docker run --rm hello-world
+    docker pull ubuntu:20.04 && time docker run --rm -it -v "$PWD:/wrk" -w "/wrk" ubuntu:20.04 touch test.txt
 
-	echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/$USER
+Once it's up and running, performance is as expected, close to native. Just like an x86 system
 
+## Images
 
-########################################################
+Most images are not made for armhf. Often you'll find images for arm, but they're arm64, like the Raspberry Pi, but not armhf, like the odroid-hc2
 
-Configure unattended-upgrades-on-ubuntu-debian
-
-https://haydenjames.io/how-to-enable-unattended-upgrades-on-ubuntu-debian/
-
-
-##############################
-Install plex
-
-Get deb from: 
-https://www.plex.tv/media-server-downloads/#plex-media-server
-
-	wget https://downloads.plex.tv/plex-media-server-new/1.23.5.4862-0f739d462/debian/plexmediaserver_1.23.5.4862-0f739d462_armhf.deb
-	
-	dpkg -i plex*
-
-####################################
-
-Install jenkins
-
-	sudo apt install openjdk-11-jdk-headless
-
-then follow guide at https://pkg.jenkins.io/debian-stable/
-
-########################################################
-PODMAN time
-
-https://podman.io/getting-started/installation
-
-https://build.opensuse.org/package/show/devel:kubic:libcontainers:stable/podman
-
-	. /etc/os-release
-	echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-	curl -L "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_${VERSION_ID}/Release.key" | sudo apt-key add -
-	sudo apt-get update
-	sudo apt-get -y upgrade
-	sudo apt-get -y install podman slirp4netns
-	sudo ln -s /run/podman/podman.sock /var/run/docker.sock	##Symlink to cheat compose
-	
-## Test podman
-
-	podman run --rm hello-world
-
-	alias docker=podman
-
-* Test docker
-
-	docker pull hello-world && time docker run --rm hello-world
-	docker pull ubuntu:20.04 && time docker run --rm -it -v "$PWD:/wrk" -w "/wrk" ubuntu:20.04 touch test.txt
-
-* Verify that test.txt is owned by your user, not root.
-
-	ls -lah
-
-	
+You may have to learn how to make these images yourself if you need them.

@@ -176,10 +176,9 @@ You install this first
 
 Then follow guide at <https://pkg.jenkins.io/debian-stable/>:
 
-  wget -q -O - 'https://pkg.jenkins.io/debian-stable/jenkins.io.key' | sudo apt-key add -
-  deb 'https://pkg.jenkins.io/debian-stable' binary/
-  sudo apt-get update
-  sudo apt-get install jenkins -y
+    wget -q -O - 'https://pkg.jenkins.io/debian-stable/jenkins.io.key' | sudo apt-key add - 
+    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    sudo apt-get update && sudo apt-get install jenkins -y
 
 Jenkins is now installed
 

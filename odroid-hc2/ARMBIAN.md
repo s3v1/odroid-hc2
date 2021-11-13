@@ -8,7 +8,7 @@ Armbian is based on Debian or Ubuntu and has nice support for a lot of ARM-based
 
 Get an image from the armbian page listed above.
 
-I suggest you get the default **Armbian Focal**, which is based on Ubuntu LTS 20.04, It currently uses the 4.x kernal and has the best support and compatibility:
+I suggest you get the default **Armbian Focal**, which is based on Ubuntu LTS 20.04, It currently uses the 5.x kernel and has the best support and compatibility:
 
 [Here is a direct link to download the image](https://redirect.armbian.com/odroidxu4/Focal_legacy)
 
@@ -57,18 +57,11 @@ Run these commands to update the OS:
 
     sudo apt update && sudo apt upgrade -y && sudo apt-get dist-upgrade && sudo apt autoremove -y
 
-## Set HC2 optimized config
+## DO NOT Set HC2 optimized config
 
 "This board is stripped Odroid XU4 and we use the same images, however, we provide a specially optimized config (for kernel 4.14.y or higher) which has to be applied manually. This results in shorter boot time and lower consumption. Run armbian-config utility and go to section system -> DTB and select optimized board configuration for Odroid HC1. The same config is valid for HC2 and MC1."
 
-    sudo armbian-config
-
-* Choose "System"
-* Choose "DTB"
-* Choose "Odroid HC1/HC2"
-
-You'll asked to **reboot**, and you should say yes.
-Login again afterwards. Remember to use the new hostname in case you changed it above.
+DO NOT DO THIS! Choosing this special config will make the boards unstable and "lock" up, so a hard restart is required.
 
 ### Login
 
@@ -160,44 +153,3 @@ You're done with configuring unattended-upgrades
 ### All done with OS
 
 Now the OS is configured and you are ready to start using the server.
-Check out these other OPTIONAL services:
-
-## Jenkins
-
- [Jenkins](https://www.jenkins.io/) is a nice server for devops/CI/CD automation.
-
-### Pre-requisites for Jenkins
-
-You install this first
-
-    sudo apt install openjdk-11-jdk-headless -y
-
-### Install Jenkins
-
-Then follow guide at <https://pkg.jenkins.io/debian-stable/>:
-
-    wget -q -O - 'https://pkg.jenkins.io/debian-stable/jenkins.io.key' | sudo apt-key add - 
-    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-    sudo apt-get update && sudo apt-get install jenkins -y
-
-Jenkins is now installed
-
-### Use Jenkins
-
-By default Jenkins runs on localhost:8080
-
-You should be able to see the initial admin password, by running:
-
-    cat /var/jenkins_home/secrets/initialAdminPassword
-
-## Netdata monitoring
-
-Netdata is a nice monitoring tool.
-
-[Here's how to install the client](https://learn.netdata.cloud/docs/get-started#install-on-linux-with-one-line-installer-recommended)
-
-The short version is:
-
-    bash <(curl -Ss https://my-netdata.io/kickstart.sh) --stable-channel --disable-telemetry
-
-It may take a while, since there's no precompiled version for this platform and it has to compile all the agents. After installation [You can view local netdata on http://hostname:19999](http://ohc21:19999) or add it to your "war room" at <https://app.netdata.cloud>

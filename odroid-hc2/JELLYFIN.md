@@ -23,6 +23,10 @@ Here are the highlights at the time of writing:
     sudo apt update
     sudo apt install jellyfin -y
 
+Then add the user to the "video" group:
+
+    sudo usermod -a -G video jellyfin
+
 Service control:
 
     sudo service jellyfin status

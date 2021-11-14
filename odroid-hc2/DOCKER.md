@@ -1,8 +1,8 @@
 # Docker
 
-## Pre-requisites
+## Prerequisites
 
-You should check the [Armbian OS Setup guide](README.md) first.
+We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
 
 ## Official Guide
 

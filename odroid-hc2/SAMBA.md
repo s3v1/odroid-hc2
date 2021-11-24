@@ -13,7 +13,7 @@ Prepare a file share
     sudo mkdir -p /data/video
     sudo chown -R nobody:video /data/video
     sudo chmod -R 775 /data/video
-    suod chmod g+s /data/video
+    sudo chmod g+s /data/video
 
 Install samba
 
@@ -33,7 +33,7 @@ Add this to the end of the text file:
         writable = yes
         guest ok = yes
 
-And then save (ctrl-x) and then run 
+And then save (ctrl-x) and then run:
 
     testparm
 

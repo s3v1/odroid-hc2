@@ -57,6 +57,12 @@ Run these commands to update the OS:
 
     sudo apt update && sudo apt upgrade -y && sudo apt-get dist-upgrade && sudo apt autoremove -y
 
+### Reboot
+
+Reboot for the new hostname to take effect:
+
+    sudo reboot
+
 ## DO NOT Set HC2 optimized config
 
 "This board is stripped Odroid XU4 and we use the same images, however, we provide a specially optimized config (for kernel 4.14.y or higher) which has to be applied manually. This results in shorter boot time and lower consumption. Run armbian-config utility and go to section system -> DTB and select optimized board configuration for Odroid HC1. The same config is valid for HC2 and MC1."
@@ -71,7 +77,7 @@ SSH login as the new user, in my case 'sv':
 
 ### Set public key for the regular user
 
-Add you own public key, in my case:
+Add your own public key, in my case:
 
     mkdir $HOME/.ssh
     chmod 700 $HOME/.ssh

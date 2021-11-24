@@ -18,6 +18,25 @@ Then follow guide at <https://pkg.jenkins.io/debian-stable/>:
 
 Jenkins is now installed
 
+## Modify memory usage
+
+Increase or decrease memory by editing this file:
+
+    sudo nano /etc/default/jenkins
+
+The default is:
+
+    #JAVA_ARGS="-Xmx256m"
+
+As an example you can adjusts memory and let it use G1GC it by using:
+
+    JAVA_ARGS="-Xmx512m -XX:+UseG1GC"
+
+Then restart the service:
+
+    sudo service jenkins stop
+    sudo service jenkins start
+
 ## Use Jenkins
 
 By default Jenkins runs on localhost:8080

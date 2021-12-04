@@ -1,5 +1,7 @@
 # Docker
 
+This guide is for normal *as-root* docker. I was unable to get rootless docker running for the Odroid HC2
+
 ## Prerequisites
 
 We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.

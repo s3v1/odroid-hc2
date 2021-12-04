@@ -38,14 +38,23 @@ Right after changing the password, you are asked to create a normal user-account
 
 When it says *"Set user language based on your location? [Y/n]"* - **SAY NO!!**
 
+### Set public key for the root user
+
+Add your own public key, in my case:
+
+    mkdir $HOME/.ssh
+    chmod 700 $HOME/.ssh
+    echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOUWK5GhGu42n434IH2e6wQXrP5SzZLROdSZpEyalB6 myemail@domain.com' >> $HOME/.ssh/authorized_keys
+    chmod -R 600 $HOME/.ssh/*
+
 ### Change hostname
 
 To change the hostname, run these commands:
 
-    sudo apt install -y avahi-daemon
     sudo hostnamectl set-hostname ohc21
+    sudo apt install -y avahi-daemon
 
-You can use another hostname, of course. just replace "plex" above with something else.
+You can use another hostname, of course. just replace the hostname above with something else.
 
 You can optionally change the name in /etc/hosts to set the hostname to 127.0.0.1, if you want to use it locally:
 
@@ -117,16 +126,20 @@ To wipe all partitions and create a new one on the drive, first run:
 
 * Then use the **"d"** command in the fdisk tool to delete the partions, one-by-one if you have several. You'll need to run the **"d"** command once for each partition
 * Use the **"g"** command to create a new GPT partition table
-* USe the **"n"** command to create a new partion. Accept the defaults.
+* Use the **"n"** command to create a new partion. Accept the defaults.
 * Use the **"w"** command to write changes to disk and exit.
 
 You're now done with fdisk.
 
 Then run:
 
-    nand-sata-install
+    sudo nand-sata-install
 
-...and then follow the obvious path. I prefer **ext4** over btrfs, for maximum compatibility.
+...and:
+
+* Choose the "Boot from SD..." option
+* Choose your **/dev/sda1** as the destination.
+* Choose the filesystem. I prefer **ext4** over btrfs, for maximum compatibility.
 
 Reboot when it asks you to.
 

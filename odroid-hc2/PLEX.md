@@ -9,11 +9,8 @@ You can read about how to [Install plex from a repository](https://support.plex.
 Here's a quick recap:
 
     echo deb https://downloads.plex.tv/repo/deb public main | sudo tee /etc/apt/sources.list.d/plexmediaserver.list
-    
     curl https://downloads.plex.tv/plex-keys/PlexSign.key | sudo apt-key add -
-    
     sudo apt-get update
-
     sudo apt-get install plexmediaserver -y
 
 You may get asked about "Configuration file '/etc/apt/sources.list.d/plexmediaserver.list'" and what to keep... you should choose the package maintainers version, ie. "Y"

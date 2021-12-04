@@ -13,7 +13,7 @@ Prepare a file share
     sudo mkdir -p /data/video
     sudo chown -R nobody:video /data/video
     sudo chmod -R 775 /data/video
-    sudo chmod g+s /data/video
+    sudo chmod -R g+s /data/video
 
 Install samba
 

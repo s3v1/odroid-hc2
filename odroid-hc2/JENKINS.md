@@ -18,6 +18,26 @@ Then follow guide at <https://pkg.jenkins.io/debian-stable/>:
 
 Jenkins is now installed
 
+## Create worker
+
+It's good practice to do jenkins builds using workers, rather than the server process itself.
+
+While having the worker on another machine or in a docker container is ideal... If you only have one machine, it's still a good idea to have separate accounts/login for the master and the workers.
+
+Here's how to make a worker account:
+
+    sudo adduser jenwork --shell /bin/bash
+
+You'll be asked for password and some more info and then the user is all set.
+
+## Use Jenkins
+
+By default Jenkins runs on localhost:8080
+
+You should be able to see the initial admin password, by running:
+
+    sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
 ## Modify memory usage
 
 Increase or decrease memory by editing this file:
@@ -36,11 +56,3 @@ Then restart the service:
 
     sudo service jenkins stop
     sudo service jenkins start
-
-## Use Jenkins
-
-By default Jenkins runs on localhost:8080
-
-You should be able to see the initial admin password, by running:
-
-    cat /var/jenkins_home/secrets/initialAdminPassword

@@ -108,7 +108,7 @@ Here comes a few steps that are good to do in the beginning, to get a good start
 
 Install some of my favourite tools and utilities. Avahi announces hostname on the network. Glances is a good alternative to htop.
 
-    sudo apt install -y git nano htop mc build-essential glances curl avahi-daemon pigz
+    sudo apt install -y git nano htop mc build-essential glances curl avahi-daemon pigz unattended-upgrades
 
 ### OPTIONAL: Install HDD/SSD
 

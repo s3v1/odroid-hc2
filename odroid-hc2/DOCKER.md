@@ -10,7 +10,7 @@ We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
 
 Guide: <https://docs.docker.com/engine/install/ubuntu/>
 
-However, there's no armhf release for "focal", so you need to replace an ywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too.
+However, there's no armhf release for "focal", so you need to replace anywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too.
 
 See that tip in this bug report: <https://github.com/docker/for-linux/issues/1035#issuecomment-905133113>
 

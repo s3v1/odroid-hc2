@@ -172,3 +172,27 @@ You're done with configuring unattended-upgrades
 ### All done with OS
 
 Now the OS is configured and you are ready to start using the server.
+
+### OPTIONAL: Disable ZRAm swap 
+
+If you don't like ZRAM as swap, you can disable it.
+From https://serverfault.com/a/1094015
+
+    sudo nano /etc/default/armbian-zram-config
+
+A few lines down the file, uncomment the line that says SWAP=false:
+
+    # Zram swap enabled by default, unless set to disabled
+    SWAP=false
+
+### OPTIONAL: Add swap on disk
+
+From https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-20-04
+
+    sudo fallocate -l 4G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    sudo cp /etc/fstab /etc/fstab.bak
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab    
+

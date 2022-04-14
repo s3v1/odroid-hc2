@@ -50,3 +50,18 @@ Once it's up and running, performance is as expected, close to native. Just like
 Most images are not made for armhf. Often you'll find images for arm, but they're arm64, like the Raspberry Pi, but not armhf, like the odroid-hc2
 
 You may have to learn how to make these images yourself if you need them.
+
+## Rootless docker
+
+If you want *rootless* docker, you can modify the docker installation you just made. We'll just follow [official guide to rootless docker](https://docs.docker.com/engine/security/rootless/)... but that doesn't fully work, for example it doesn't include 'slirp4netns', so we had to change the steps. Here are the highlights:
+
+    sudo systemctl disable --now docker.service docker.socket
+    sudo apt-get install -y dbus-user-session docker-ce-rootless-extras uidmap slirp4netns
+    dockerd-rootless-setuptool.sh install
+
+Then add these variables to your environment:
+
+    echo 'export PATH=/usr/bin:$PATH' >>~/.bashrc
+    echo 'export DOCKER_HOST=unix:///run/user/1000/docker.sock' >>~/.bashrc
+
+

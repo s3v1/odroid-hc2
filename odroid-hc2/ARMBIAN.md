@@ -171,7 +171,7 @@ You're done with configuring unattended-upgrades
 
 Now the OS is configured and you are ready to start using the server.
 
-### OPTIONAL: Disable ZRAm swap 
+### OPTIONAL: Disable ZRAM swap
 
 If you don't like ZRAM as swap, you can disable it.
 From https://serverfault.com/a/1094015

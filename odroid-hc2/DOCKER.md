@@ -74,3 +74,15 @@ It should just work now. Try it out:
     docker pull ubuntu:20.04 && time docker run --rm -it -v "$PWD:/wrk" -w "/wrk" ubuntu:20.04 touch test.txt
 
 You'll notice that the 'test.txt' file is now written as your own user, making it much easier to work with files using docker.
+
+## Docker compose
+
+[Docker compose v2](https://docs.docker.com/compose/cli-command/) is great for managing complex docker setups. It's a new version that is a plugin to the main docker command, rather than a wrapper. It's already in the repos of the OS, so all you need to do is:
+
+    sudo apt install docker-compose-plugin -y
+
+Then test it with:
+
+    docker compose --version
+
+In other words, compose is now a plugin to the main docker command, instead of a separate command. So you call it using 'docker compose' without the dash '-', instead of 'docker-compose' like you used to.

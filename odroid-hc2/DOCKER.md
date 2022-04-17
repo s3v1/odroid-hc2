@@ -43,13 +43,13 @@ There's a bit of startup delay, when running docker. It makes even the smallest 
     docker pull hello-world && time docker run --rm hello-world
     docker pull ubuntu:20.04 && time docker run --rm -it -v "$PWD:/wrk" -w "/wrk" ubuntu:20.04 touch test.txt
 
-Once it's up and running, performance is as expected, close to native. Just like an x86 system
+Since, it's running as root you'll notive that the 'test.txt' file we just made is owned by root. See below for instructions on how to convert to a rootless installation.
+
+Once it's up and running, performance is as expected, close to native. However, there's a startup time of about 3 seconds added to every command. So if you run a server, it won't matter much, but if you like to dockerize individual commands, you'll feel slowed down. I don't think it's due to arm32 or the SBC in general, since I get a startup delay on my powerful x64 laptop, it's just a lot shorter. My guess is that it's just due to CPU speed. So, if you get an SBC with faster cores, you'll probably get better startup delay times.
 
 ## Images
 
-Most images are not made for armhf. Often you'll find images for arm, but they're arm64, like the Raspberry Pi, but not armhf, like the odroid-hc2
-
-You may have to learn how to make these images yourself if you need them.
+Most images are not made for armhf. Often you'll find images for arm, but they're arm64, like the Raspberry Pi, but not armhf, like the odroid-hc2. Many base OS images have the suppoort however, so you may have to explore how to make docker images yourself for this platform, aka arm32/v7.
 
 ## Rootless docker
 
@@ -64,4 +64,13 @@ Then add these variables to your environment:
     echo 'export PATH=/usr/bin:$PATH' >>~/.bashrc
     echo 'export DOCKER_HOST=unix:///run/user/1000/docker.sock' >>~/.bashrc
 
+and then reload the ~/.bashrc like this:
 
+    . ~/.bashrc
+
+It should just work now. Try it out:
+
+    docker pull hello-world && time docker run --rm hello-world
+    docker pull ubuntu:20.04 && time docker run --rm -it -v "$PWD:/wrk" -w "/wrk" ubuntu:20.04 touch test.txt
+
+You'll notice that the 'test.txt' file is now written as your own user, making it much easier to work with files using docker.

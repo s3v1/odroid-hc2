@@ -42,7 +42,7 @@ To make it permanent, add a line to /etc/fstab:
 
 Like this:
 
-    //nas/media/video                               /mnt/media      cifs    username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev  0       0
+    //nas/media/video   /mnt/media  cifs    username=video,password=V!d30pass,uid=plex,gid=plex,x-systemd.automount,_netdev 0   0
 
 Then mount it for real:
 

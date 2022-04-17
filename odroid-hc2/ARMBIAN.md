@@ -8,9 +8,7 @@ Armbian is based on Debian or Ubuntu and has nice support for a lot of ARM-based
 
 Get an image from the armbian page listed above.
 
-I suggest you get the default **Armbian Focal**, which is based on Ubuntu LTS 20.04, It currently uses the 5.x kernel and has the best support and compatibility:
-
-[Here is a direct link to download the image](https://redirect.armbian.com/odroidxu4/Focal_legacy)
+I suggest you get the default **Armbian Focal**, which is based on Ubuntu LTS 20.04, It currently uses the 5.x kernel and has the best support and compatibility.
 
 Write it the SD-card, using something like [Balena Etcher](https://www.balena.io/etcher/).
 
@@ -51,7 +49,7 @@ Add your own public key, in my case:
 
 To change the hostname, run these commands:
 
-    sudo hostnamectl set-hostname ohc21
+    sudo hostnamectl set-hostname <hostname>
     sudo apt install -y avahi-daemon
 
 You can use another hostname, of course. just replace the hostname above with something else.
@@ -82,7 +80,7 @@ DO NOT DO THIS! Choosing this special config will make the boards unstable and "
 
 SSH login as the new user, in my case 'sv':
 
-    ssh sv@ohc21
+    ssh sv@<hostname>
 
 ### Set public key for the regular user
 

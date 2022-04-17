@@ -2,11 +2,13 @@
 
  [Jenkins](https://www.jenkins.io/) is a nice server for devops/CI/CD automation.
 
-## Pre-requisites for Jenkins
+## Prerequisites
 
-You install this first
+We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
 
-    sudo apt install openjdk-11-jdk-headless -y
+Then install this first
+
+    sudo apt install openjdk-17-jdk-headless -y
 
 ## Install Jenkins
 

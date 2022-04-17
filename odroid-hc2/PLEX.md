@@ -2,6 +2,10 @@
 
 Plex is a nice video server that has support for the CPU. The Odroid HC2 has enough CPU power for light realtime transcoding.
 
+## Prerequisites
+
+We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
+
 ## Repo install
 
 You can read about how to [Install plex from a repository](https://support.plex.tv/articles/235974187-enable-repository-updating-for-supported-linux-server-distributions/)

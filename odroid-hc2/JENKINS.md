@@ -8,7 +8,9 @@ We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
 
 Then install this first
 
-    sudo apt install openjdk-17-jdk-headless -y
+    sudo apt install openjdk-11-jdk-headless -y
+
+Since Jenkins REQUIRES Java 8 or 11. Any other version will not work
 
 ## Install Jenkins
 

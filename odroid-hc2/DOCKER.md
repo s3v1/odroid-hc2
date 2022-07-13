@@ -10,7 +10,7 @@ We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
 
 Guide: <https://docs.docker.com/engine/install/ubuntu/>
 
-However, there's no armhf release for "focal", so you need to replace anywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too.
+BTW, there's no armhf release for Ubuntu 20.04 AKA "focal", so you need to replace anywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too. Ubuntu 22.04 AKA "Janmmy" is fine, no need to change anything.
 
 See that tip in this bug report: <https://github.com/docker/for-linux/issues/1035#issuecomment-905133113>
 
@@ -19,7 +19,7 @@ See that tip in this bug report: <https://github.com/docker/for-linux/issues/103
     sudo apt-get remove docker docker-engine docker.io containerd runc -y
     sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release -y
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo "deb [arch=armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu bionic stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    echo "deb [arch=armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
@@ -29,8 +29,7 @@ See that tip in this bug report: <https://github.com/docker/for-linux/issues/103
 
 ## Add user to group
 
-    sudo usermod -aG docker $USER
-    newgrp docker
+    sudo usermod -aG docker $USER && newgrp docker
 
 ## Test without sudo
 
@@ -55,9 +54,25 @@ Most images are not made for armhf. Often you'll find images for arm, but they'r
 
 If you want *rootless* docker, you can modify the docker installation you just made. We'll just follow [official guide to rootless docker](https://docs.docker.com/engine/security/rootless/)... but that doesn't fully work, for example it doesn't include 'slirp4netns', so we had to change the steps. Here are the highlights:
 
-    sudo systemctl disable --now docker.service docker.socket
+First some pre-requisites:
+
     sudo apt-get install -y dbus-user-session docker-ce-rootless-extras uidmap slirp4netns
+
+Then stop and disable the service:
+
+    sudo systemctl disable --now docker.service docker.socket
+
+Do the rootless setup:
+
     dockerd-rootless-setuptool.sh install
+
+Troubleshooting: If you get an "[ERROR] Aborting because rootful Docker (/var/run/docker.sock) is running and accessible. Set --force to ignore" message, then do a reboot and then continue.
+
+It'll say something like:
+    [INFO] Installed docker.service successfully.
+    [INFO] To control docker.service, run: `systemctl --user (start|stop|restart) docker.service`
+    [INFO] To run docker.service on system startup, run: `sudo loginctl enable-linger sv`
+But that doesn't seem to be neccesary. It works fine after a reboot anyway.
 
 Then add these variables to your environment:
 

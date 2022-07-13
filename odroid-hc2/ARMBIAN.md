@@ -70,11 +70,7 @@ Reboot for the new hostname to take effect:
 
     sudo reboot
 
-## DO NOT Set HC2 optimized config
-
-"This board is stripped Odroid XU4 and we use the same images, however, we provide a specially optimized config (for kernel 4.14.y or higher) which has to be applied manually. This results in shorter boot time and lower consumption. Run armbian-config utility and go to section system -> DTB and select optimized board configuration for Odroid HC1. The same config is valid for HC2 and MC1."
-
-DO NOT DO THIS! Choosing this special config will make the boards unstable and "lock" up, so a hard restart is required.
+Give it a couple of minutes for the reboot.
 
 ### Login
 
@@ -106,7 +102,7 @@ Here comes a few steps that are good to do in the beginning, to get a good start
 
 Install some of my favourite tools and utilities. Avahi announces hostname on the network. Glances is a good alternative to htop.
 
-    sudo apt install -y git nano htop mc build-essential glances curl avahi-daemon pigz unattended-upgrades
+    sudo apt install -y git nano htop mc build-essential glances curl pigz unattended-upgrades
 
 ### OPTIONAL: Install HDD/SSD
 

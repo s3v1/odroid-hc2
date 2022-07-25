@@ -92,11 +92,7 @@ You'll notice that the 'test.txt' file is now written as your own user, making i
 
 ## Docker compose
 
-[Docker compose v2](https://docs.docker.com/compose/cli-command/) is great for managing complex docker setups. It's a new version that is a plugin to the main docker command, rather than a wrapper. It's already in the repos of the OS, so all you need to do is:
-
-    sudo apt install docker-compose-plugin -y
-
-Then test it with:
+[Docker compose v2](https://docs.docker.com/compose/cli-command/) is great for managing complex docker setups. It's a new version that is a plugin to the main docker command, rather than a wrapper. It's already in the repos of the OS, so you can just use it like this:
 
     docker compose --version
 

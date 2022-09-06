@@ -91,6 +91,18 @@ It should just work now. Try it out:
 
 You'll notice that the 'test.txt' file is now written as your own user, making it much easier to work with files using docker.
 
+## Run rootless docker on ports <= 1024
+
+To run on privileged ports when using docker rootkless you need to allow it, see <https://docs.docker.com/engine/security/rootless/#exposing-privileged-ports>
+
+    sudo setcap cap_net_bind_service=ep $(which rootlesskit)
+
+and then
+
+    systemctl --user restart docker
+
+to restart the docker daemon
+
 ## Docker compose
 
 [Docker compose v2](https://docs.docker.com/compose/cli-command/) is great for managing complex docker setups. It's a new version that is a plugin to the main docker command, rather than a wrapper. It's already in the repos of the OS, so you can just use install it like this:

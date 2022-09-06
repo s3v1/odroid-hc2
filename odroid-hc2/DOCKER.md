@@ -21,7 +21,8 @@ See that tip in this bug report: <https://github.com/docker/for-linux/issues/103
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo "deb [arch=armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    sudo apt-get install docker-compose-plugin -y
 
 ## Test with sudo
 
@@ -92,7 +93,11 @@ You'll notice that the 'test.txt' file is now written as your own user, making i
 
 ## Docker compose
 
-[Docker compose v2](https://docs.docker.com/compose/cli-command/) is great for managing complex docker setups. It's a new version that is a plugin to the main docker command, rather than a wrapper. It's already in the repos of the OS, so you can just use it like this:
+[Docker compose v2](https://docs.docker.com/compose/cli-command/) is great for managing complex docker setups. It's a new version that is a plugin to the main docker command, rather than a wrapper. It's already in the repos of the OS, so you can just use install it like this:
+
+    sudo apt-get install docker-compose-plugin -y
+
+and then test it like this:
 
     docker compose --version
 

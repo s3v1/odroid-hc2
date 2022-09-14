@@ -10,7 +10,7 @@ We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.
 
 Guide: <https://docs.docker.com/engine/install/ubuntu/>
 
-BTW, there's no armhf release for Ubuntu 20.04 AKA "focal", so you need to replace anywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too. Ubuntu 22.04 AKA "Janmmy" is fine, no need to change anything.
+BTW, there's no armhf release for Ubuntu 20.04 AKA "focal", so you need to replace anywhere it says "$(lsb_release -cs)" with "bionic". That'll use the one for 18.04, which works fine on 20.04/focal too. Ubuntu 22.04 AKA "jammmy" is fine, no need to change anything.
 
 See that tip in this bug report: <https://github.com/docker/for-linux/issues/1035#issuecomment-905133113>
 
@@ -22,7 +22,6 @@ See that tip in this bug report: <https://github.com/docker/for-linux/issues/103
     echo "deb [arch=armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
-    sudo apt-get install docker-compose-plugin -y
 
 ## Test with sudo
 

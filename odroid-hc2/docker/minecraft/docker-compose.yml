@@ -1,0 +1,12 @@
+version: "3.5"
+services:
+  minecraft:
+    image: eclipse-temurin:17
+    #container_name: minecraft
+    ports:
+      - "25565:25565/tcp"
+    volumes:
+      - "$PWD/server:/wrk"
+    working_dir: /wrk
+    restart: "unless-stopped"
+    command: "java -Xmx1g -XX:+UseG1GC -jar fabric-server-mc.1.18.2-loader.0.14.10-launcher.0.11.1.jar nogui"

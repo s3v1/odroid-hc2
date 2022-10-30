@@ -1,21 +1,29 @@
-
 # Run a minecraft server
 
-## Get fabric server
+This is a way to run a minecraft server using docker. You can start by running it interactively so you can test it and set an op, since normal docker compose will not give you console access.
 
-Visit https://fabricmc.net/use/server/ to get the fabric server. For example:
+The server will run in the 'server' folder. You are supposed to set up this folder yourself, this docker system is just for running the server. So you'll need to set the eula and modify the server properties
+
+## Use docker compose to run in the foreground, with interactive console
+
+    docker compose run minecraft
+
+## Use docker compose to run in the background
+
+    docker compose up -d
+
+## Fabric server
+
+Visit <https://fabricmc.net/use/server/> to find new urls get the fabric server. For example:
 
     curl -OJ https://meta.fabricmc.net/v2/versions/loader/1.18.2/0.14.8/0.11.0/server/jar
 
-## run standalone
+## Mods
 
-    java -Xmx2G -XX:+UseG1GC -jar fabric-server-mc.1.18.2-loader.0.14.8-launcher.0.11.0.jar nogui
+Check out Modrinth for a nice mod directory with search/filter capability. For example:
 
-## Run in docker
+<https://modrinth.com/mods?g=categories%3A%27fabric%27&v=1.18.2&e=server>
 
-Try this out to run a minecraft server
+The mods go in the ... mods folder ;)
 
-    docker run -v "$PWD:/wrk" -w "/wrk" -it --rm -p 25565:25565 eclipse-temurin:17 java -Xmx1g -XX:+UseG1GC -jar fabric-server-mc.1.18.2-loader.0.14.8-launcher.0.11.0.jar nogui
-
-https://gist.github.com/Obydux/55b967f5dcc00633fe895e5a473363d5
-
+It's important to remember to download the fabric API mod and put it in the mods folder. Other wise the fabric mods will not run. It's not enough to have the fabric loader

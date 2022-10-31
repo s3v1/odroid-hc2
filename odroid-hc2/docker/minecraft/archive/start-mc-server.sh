@@ -17,6 +17,7 @@ else
     wget -nc -P server/mods https://cdn.modrinth.com/data/hEOCdOgW/versions/mc1.18.x-0.8.1/phosphor-fabric-mc1.18.x-0.8.1.jar
     wget -nc -P server/mods https://cdn.modrinth.com/data/hvFnDODi/versions/0.1.2/lazydfu-0.1.2.jar
     wget -nc -P server/mods https://cdn.modrinth.com/data/uXXizFIs/versions/4.2.1/ferritecore-4.2.1-fabric.jar
+    wget -nc -P server/mods https://cdn.modrinth.com/data/l6YH9Als/versions/1.9.11-fabric/spark-1.9.11-fabric.jar
 
     # get QoL mods
     wget -nc -P server/mods https://cdn.modrinth.com/data/fALzjamp/versions/1.2.164/Chunky-1.2.164.jar

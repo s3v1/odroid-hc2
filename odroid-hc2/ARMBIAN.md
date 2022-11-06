@@ -1,16 +1,20 @@
 # Armbian
 
-Armbian is based on Debian or Ubuntu and has nice support for a lot of ARM-based SBC's
+Armbian is based on Debian or Ubuntu and has nice support for a lot of ARM-based SBC's.
 
-[Armbian page for the HC2](https://www.armbian.com/odroid-hc1/)
+## Get image
 
-## Get and write the OS image
+Their images for Odroid XU4 also work for HC2, as it's essentially the same hardware.
 
-Get an image from the armbian page listed above.
+[Armbian page for the HC2](https://www.armbian.com/odroid-xu4/)
 
-I suggest you get the default **Armbian Focal**, which is based on Ubuntu LTS 20.04, It currently uses the 5.x kernel and has the best support and compatibility.
+Download an image from the armbian page listed above. Get a version without desktop, currently called "CLI".
 
-Write it the SD-card, using something like [Balena Etcher](https://www.balena.io/etcher/).
+## Write the image to your SD-card
+
+Get a tool to write images. I like Balena Etcher [Balena Etcher](https://www.balena.io/etcher/).
+
+Write the image to the SD-card.
 
 Then insert the SD-Card and plug in the power to start the machine.
 
@@ -26,15 +30,11 @@ You can login with:
 
     ssh root@odroidxu4
 
-...and use the password above. As soon as you login, you are prompted to change this password (remember, it's still using US-Keyboard setting at this point).
+...and use the password above. As soon as you login, you are prompted to change this password (remember, it's still using US-Keyboard setting at this point, so avoid characters like æøå).
 
 ### Create normal/non-root user
 
-Right after changing the password, you are asked to create a normal user-account for your everyday tasks. It will have *sudo* rights. I created a user called "sv"... you should probably choose something else and replace it in the rest of this document, where Iuser it here and there.
-
-* **Make sure to NOT select using local language**
-
-When it says *"Set user language based on your location? [Y/n]"* - **SAY NO!!**
+Right after changing the password, you are asked to create a normal user-account for your everyday tasks. It will have *sudo* rights. I created a user called "sv"... you should probably choose something else and replace it in the rest of this document, where I use it here and there.
 
 ### Set public key for the root user
 

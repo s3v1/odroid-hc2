@@ -5,10 +5,12 @@ This is a way to run a minecraft server using docker. You can start by running i
 The server will run in the 'server' folder. You are supposed to set up this folder yourself, this docker system is just for running the server. So you'll need to set the eula and modify the server properties
 
 ## Use docker compose to run in the foreground, with interactive console
+To test it out and make sure you're settings are in order, you should run it in the foreground to start with:
 
     docker compose run minecraft
 
 ## Use docker compose to run in the background
+Once, you've verified that all is good, you can use this command instead:
 
     docker compose up -d
 
@@ -57,3 +59,9 @@ I used spark to profile with one player running around, and could get 20 TPS con
 However, I still get messages like this in the log, so it's not perfect: " [Server thread/WARN]: Can't keep up! Is the server overloaded? Running 2836ms or 56 ticks behind". But it's pretty rare.
 
 Read more about spark options here: <https://spark.lucko.me/docs/Command-Usage>
+
+## RCON
+
+RCON is a way to use a cli to issue remote commands to a server that you don't have a console connection to. We can use a docker image made by itzg <https://hub.docker.com/r/itzg/rcon-cli/tags>:
+
+    docker run --rm itzg/rcon-cli --password rcon

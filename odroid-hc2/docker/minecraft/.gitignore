@@ -2,3 +2,4 @@ server
 *.bak
 saves
 backup
+*.tar*

@@ -2,6 +2,8 @@
 
 This guide is for getting *rootless* docker to work. I much prefer it over the as-root way of running docker
 
+I don't like regular as-root docker as it always messes up file permissions so all files are written as root.... and I like to map folders rather than volumes.
+
 ## Prerequisites
 
 We assume the OS is installed according to the [Armbian](./ARMBIAN.md) guide.

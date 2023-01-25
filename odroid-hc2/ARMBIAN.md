@@ -104,6 +104,32 @@ Install some of my favourite tools and utilities. Avahi announces hostname on th
 
     sudo apt install -y git nano htop mc build-essential glances curl pigz unattended-upgrades
 
+### Unattended upgrades
+
+You can configure unattended-upgrades on ubuntu/debian systems to also update normal packages, instead of just security packages.
+
+It's not required and it's not a good idea for production systems, but nice for something like your personal jenkins or plex server (see later sections)
+
+Here is the guide: [How to Enable Unattended Upgrades on Ubuntu/Debian](https://haydenjames.io/how-to-enable-unattended-upgrades-on-ubuntu-debian/)
+
+Quick bits from the article. First edit
+
+    sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
+
+Uncomment the line that says
+
+    //"${distro_id}:${distro_codename}-updates";
+
+Then edit:
+
+    sudo nano /etc/apt/apt.conf.d/20auto-upgrades
+
+Add this line:
+
+    APT::Periodic::AutocleanInterval "7";
+
+You're done with configuring unattended-upgrades
+
 ### OPTIONAL: Install HDD/SSD
 
 You *can* install the root file system to the HDD/SSD (but you don't have to). That will save wear and tear on the SD-card, probably give you much more space in "/" and maybe enven make it faster to run. The boot partition will remain on the SD-card, so you'll still need to tleave it in the machine. The Odroid-HC2 cannot boot purely from the HDD/SSD.
@@ -137,32 +163,6 @@ Then run:
 
 Reboot when it asks you to.
 
-### Unattended upgrades
-
-You can configure unattended-upgrades on ubuntu/debian systems to also update normal packages, instead of just security packages.
-
-It's not required and it's not a good idea for production systems, but nice for something like your personal jenkins or plex server (see later sections)
-
-Here is the guide: [How to Enable Unattended Upgrades on Ubuntu/Debian](https://haydenjames.io/how-to-enable-unattended-upgrades-on-ubuntu-debian/)
-
-Quick bits from the article. First edit
-
-    sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
-
-Uncomment the line that says
-
-    //"${distro_id}:${distro_codename}-updates";
-
-Then edit:
-
-    sudo nano /etc/apt/apt.conf.d/20auto-upgrades
-
-Add this line:
-
-    APT::Periodic::AutocleanInterval "7";
-
-You're done with configuring unattended-upgrades
-
 ### All done with OS
 
 Now the OS is configured and you are ready to start using the server.
@@ -183,10 +183,11 @@ A few lines down the file, uncomment the line that says SWAP=false:
 
 From https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-20-04
 
-    sudo fallocate -l 4G /swapfile
+For some reason, you have to run these one at a time:
+
+    sudo fallocate -l 6G /swapfile
     sudo chmod 600 /swapfile
     sudo mkswap /swapfile
     sudo swapon /swapfile
     sudo cp /etc/fstab /etc/fstab.bak
     echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab    
-

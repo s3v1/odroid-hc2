@@ -1,0 +1,47 @@
+version: "3"
+
+volumes:
+  pihole-etc-pihole:  # Volume for piholes persistent configuration
+  pihole-etc-dnsmasq: # Volume for piholes persistent configuration
+  #unbound:
+
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  pihole:
+    depends_on:
+      - unbound
+    container_name: pihole
+    image: pihole/pihole:latest
+    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+    ports:
+      - "192.168.86.195:53:53/tcp" #replace IP with your servers local IP
+      - "192.168.86.195:53:53/udp" #replace IP with your servers local IP
+      #- "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+      - "8090:80/tcp" # Admin interface on http://<yourhost>:8090/admin
+    environment:
+      TZ: 'Europe/Copenhagen'
+      WEBPASSWORD: 'password'
+      DNSMASQ_LISTENING: 'all'
+      DNS1: 'unbound#53' #Docker hostnames get translated to IP adress inside pihole. Pretty cool
+      #DNS2: '1.1.1.2#53' # That's cloudflare DNS server, with some badguy domains filtering.
+    # Volumes store your data between container upgrades
+    volumes:
+      - 'pihole-etc-pihole:/etc/pihole'
+      - 'pihole-etc-dnsmasq:/etc/dnsmasq.d'
+    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
+    cap_add:
+    #  - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+      - CAP_NET_BIND_SERVICE # Required to use ports < 1024
+    restart: unless-stopped
+  unbound:
+    container_name: unbound
+    image: klutchell/unbound:latest
+    #volumes:
+    #- 'unbound:/opt/unbound/etc/unbound/'
+    #ports:
+    #- "5053:53/tcp"
+    #- "5053:53/udp"
+    #cap_add:
+    #  - NET_ADMIN # Required if you are using Pi-hole as your DHCP server, else not needed
+    #  - CAP_NET_BIND_SERVICE
+    restart: unless-stopped

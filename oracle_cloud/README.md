@@ -42,7 +42,7 @@ sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 #if new kernel
 sudo reboot
 
-sudo apt install -y git nano htop mc build-essential glances curl pigz unattended-upgrades zstd
+sudo apt install -y git nano htop mc build-essential glances curl pigz unattended-upgrades zstd net-tools
 
 sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
 #uncomment   "${distro_id}:${distro_codename}-updates";
@@ -50,3 +50,12 @@ sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
 sudo nano /etc/apt/apt.conf.d/20auto-upgrades
 #Add this line:
 #    APT::Periodic::AutocleanInterval "7";
+
+# Modify iptables to allow all ports
+
+sudo apt install iptables-persistent -y
+sudo iptables -I INPUT -j ACCEPT
+sudo iptables -I OUTPUT -j ACCEPT
+sudo sh -c 'iptables-save > /etc/iptables/rules.v4'
+
+

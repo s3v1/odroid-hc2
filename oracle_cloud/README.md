@@ -22,7 +22,7 @@ exit
 
 C:\Users\sv>scp -r .ssh sv@selfhost.vilstrup.me:
 
-#Reconnect
+#Reconnect 
 
 ssh sv@selfhost.vilstrup.me
 
@@ -50,18 +50,3 @@ sudo nano /etc/apt/apt.conf.d/50unattended-upgrades
 sudo nano /etc/apt/apt.conf.d/20auto-upgrades
 #Add this line:
 #    APT::Periodic::AutocleanInterval "7";
-
-
-
-## Docker rootless
-    #curl -fsSL https://get.docker.com/rootless -o get-docker.sh
-    #sh get-docker.sh
-
-sudo apt-get install -y uidmap
-curl -fsSL https://get.docker.com/rootless | bash
-
-sudo loginctl enable-linger sv
-echo "export PATH=/home/sv/bin:\$PATH" >> ~/.bashrc && source ~/.bashrc
-
-docker run --rm -it hello-world
-
